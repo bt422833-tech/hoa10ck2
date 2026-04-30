@@ -1,0 +1,620 @@
+<!DOCTYPE html>  <html lang="vi">    <head>    
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<meta charset="UTF-8">    
+<title>Trắc nghiệm Hoá học (10)+ Đúng Sai( vanducA9 )</title>    
+<style> 
+table{
+margin:6px auto;
+font-size:12px;
+background:white;
+border-collapse:collapse;
+max-width:100%;
+}
+
+table th, table td{
+border:1px solid #666;
+padding:3px 5px;
+text-align:center;
+}
+
+table th{
+background:#a2f2f2;
+font-weight:bold;
+}
+white-space:nowrap;
+}
+.flex-row{  
+display:flex;  
+gap:10px;  
+align-items:flex-start;  
+flex-wrap:wrap;  
+}  
+#scorePopup{  
+position:fixed;  
+top:0;  
+left:0;  
+width:100%;  
+height:100%;  
+background:rgba(0,0,0,0.6);  
+display:none;  
+align-items:center;  
+justify-content:center;  
+z-index:999;  
+}  .popupBox{
+background:white;
+padding:30px;
+border-radius:14px;
+text-align:center;
+width:80%;
+max-width:320px;
+animation:pop 0.4s ease;
+}
+
+.popupBox h1{
+font-size:36px;
+color:#2e7d32;
+margin-bottom:10px;
+}
+
+.popupBox p{
+font-size:22px;
+margin-bottom:15px;
+}
+
+.popupBox button{
+padding:12px 20px;
+font-size:18px;
+background:#1e88e5;
+color:white;
+border:none;
+border-radius:8px;
+}
+
+@keyframes pop{
+0%{transform:scale(0.5);opacity:0}
+100%{transform:scale(1);opacity:1}
+}
+#result{
+animation:pop 0.5s ease;
+}
+
+@keyframes pop{
+0%{transform:scale(0.6);opacity:0}
+100%{transform:scale(1);opacity:1}
+}
+#result{
+margin-top:20px;
+padding:18px;
+font-size:28px;
+font-weight:bold;
+text-align:center;
+background:linear-gradient(135deg,#4caf50,#2e7d32);
+color:white;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+table{
+margin:6px auto;
+font-size:12px;
+background:white;
+border-collapse:collapse;
+max-width:100%;
+}
+
+table th, table td{
+border:1px solid #666;
+padding:3px 5px;
+text-align:center;
+}
+
+table th{
+background:#a2f2f2;
+font-weight:bold;
+}
+white-space:nowrap;
+}
+
+/* toàn trang */
+body{
+font-family:Arial;
+padding:16px;
+line-height:1.6;
+background:#f3f3f3;
+}
+
+.group-grid{
+display:grid;
+grid-template-columns:1fr;
+gap:16px;
+margin-bottom:24px;
+}
+
+.passage{
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.question-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+}
+
+.question{
+background:white;
+padding:8px 10px;
+border-radius:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+.question b{
+display:block;
+white-space:pre-line;
+margin-bottom:3px;
+}
+
+.question label{
+display:block;
+margin:4px 0;
+padding:3px 4px;
+border-radius:6px;
+}
+button{
+width:100%;
+padding:14px;
+font-size:18px;
+margin-top:14px;
+border:none;
+border-radius:10px;
+background:#1e88e5;
+color:white;
+font-weight:bold;
+}
+button:empty{
+display:none;
+}
+
+#redoBtn{
+background:#43a047;
+}
+.correct{
+background:#d4edda;
+color:#155724;
+font-weight:bold;
+}
+
+.wrong{
+background:#f8d7da;
+color:#721c24;
+font-weight:bold;
+}
+#topBtn{
+position:fixed;
+bottom:25px;
+right:20px;
+width:55px;
+height:55px;
+border-radius:50%;
+background:#ff9800;
+color:white;
+font-size:26px;
+border:none;
+display:none;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
+transition:0.3s;
+}
+
+#topBtn:hover{
+transform:scale(1.1);
+background:#fb8c00;
+}
+#popupDetail{
+font-size:18px;
+margin-bottom:10px;
+}
+
+#popupBar{
+width:100%;
+height:10px;
+background:#ddd;
+border-radius:6px;
+margin-top:8px;
+}
+
+#popupBarFill{
+height:10px;
+width:0%;
+background:#4caf50;
+border-radius:6px;
+transition:0.3s;
+}
+</style>
+
+</head>    
+<body>  <h2>TRẮC NGHIỆM HOÁ HỌC (25câu)</h2>    
+<form id="quiz"></form>  <h2>PHẦN ĐÚNG / SAI</h2>  
+<div id="dsquiz"></div>  <h3 id="result" style="display:none"></h3>  
+<button id="checkBtn" type="button" onclick="submitAll()">  
+CHECK ĐÁP ÁN THÔI!!!  
+</button>  <button id="redoBtn" type="button" onclick="redoQuiz()" style="display:none">  
+LÀM LẠI  
+</button>  <div id="scorePopup">  
+<div class="popupBox">  <h1>🏆 <span id="popupScore">0 / 62</span></h1>  <p id="popupPercent">0% chính xác</p>  <p id="popupDetail"></p>  <div id="popupBar">  
+<div id="popupBarFill"></div>  
+</div>  <button onclick="redoQuiz()">LÀM LẠI</button>
+<button onclick="closePopup()">ĐÓNG</button>
+
+</div>  
+</div>  
+<button id="topBtn" onclick="goTop()">↑</button>  <script>  
+function closePopup(){  
+document.getElementById("scorePopup").style.display="none";  
+}  
+function goTop(){  
+window.scrollTo({  
+top:0,  
+behavior:"smooth"  
+});  
+}  
+  
+// hiện nút khi cuộn xuống  
+window.onscroll=function(){  
+  
+let btn=document.getElementById("topBtn");  
+  
+if(document.documentElement.scrollTop>200){  
+btn.style.display="block";  
+}else{  
+btn.style.display="none";  
+}  
+  
+}  
+let submitted=false;  
+  
+function shuffle(arr){  
+for(let i=arr.length-1;i>0;i--){  
+let j=Math.floor(Math.random()*(i+1));  
+[arr[i],arr[j]]=[arr[j],arr[i]];  
+}  
+}  
+let bang = `
+<div style="overflow-x:auto">
+<table>
+<tr>
+<th>Liên Kết</th>
+<th>F-F</th>
+<th>Cl-Cl</th>
+<th>Br-Br</th>
+<th>l-l</th>
+</tr>
+
+<tr>
+<th>Năng lượng liên kết(KJ.mol-1)...</th>
+<td>159</td>
+<td>243</td>
+<td>193</td>
+<td>151</td>
+</tr>
+</table>
+</div>
+`;
+
+  
+    
+let mcq = [
+
+{q:"Câu 1. Amonia (NH3) là nguyên liệu sản xuất nitric acid và nhiều loại phân bón. Số oxi hóa của nitrogen trong amonia là",
+a:["3","0","+3","-3"],c:3},
+
+{q:"Câu 2. Chromium (VI) oxide, CrO3, là chất rắn, màu đỏ thẫm, vừa là acidic oxide, vừa là chất oxi hoá mạnh. Số oxi hoá của chromium trong oxide trên là",
+a:["0","+6","+2","+3"],c:1},
+
+{q:"Câu 3. Xét phản ứng: Zn + 2HCl → ZnCl2 + H2. Chất khử là",
+a:["H2","ZnCl2","HCl","Zn"],c:3},
+
+{q:"Câu 4. Trong phản ứng: 2Na + 2H2O → 2NaOH + H2, chất oxi hóa là",
+a:["H2O","NaOH","Na","H2"],c:0},
+
+{q:"Câu 5. Phản ứng nào sau đây là phản ứng oxi hóa – khử?",
+a:[" 2Ca + O2--to->2CaO","CaCO3--to->CaO + Co2","CaO + H2O--to->Ca(OH)2","Ca(OH)2 + CO2--> CaCO3 + H2O"],c:0},
+
+{q:"Câu 6. Phản ứng oxi hóa khử là",
+a:[
+"HCl + KOH → KCl + H2O",
+"SO3 + H2O → H2SO4",
+"Fe2O3 + 3H2SO4 → Fe2(SO4)3 + 3H2O",
+"2FeCl2 + Cl2 → 2FeCl3"
+],c:3},
+
+{q:"Câu 7. Trong phản ứng oxi hoá – khử, chất nhường electron gọi là",
+a:["chất khử","chất oxi hoá","acid","base"],c:0},
+
+{q:"Câu 8. Chất oxi hóa là chất",
+a:["nhận electron","nhường proton","nhường electron","nhận proton"],c:0},
+
+{q:"Câu 9. 2H2 + O2 → 2H2O, ΔH = -571,68 kJ. Phản ứng là",
+a:["thu nhiệt","tỏa nhiệt","không đổi năng lượng","hấp thụ nhiệt"],c:1},
+
+{q:"Câu 10. Nung KNO3: KNO3 → KNO2 + 1/2O2(g) Phản ứng nhiệt phân KNO3 là",
+a:["tỏa nhiệt, ΔH < 0","thu nhiệt, ΔH > 0","tỏa nhiệt, ΔH > 0","thu nhiệt, ΔH < 0"],c:1},
+
+{q:"Câu 11. Phản ứng nào sau đây là phản ứng tỏa nhiệt?",
+a:["∆rH⁰298= -296.8KJ","∆rH⁰298= 178.29KJ","∆rH⁰298= 52.96KJ","∆rH⁰298= 180KJ"],c:0},
+
+{q:"Câu 12. Phản ứng nào sau đây là phản ứng thu nhiệt?",
+a:["∆rH⁰298= -2220","∆rH⁰298= -57.9","∆rH⁰298=-890,36","∆rH⁰298= +235.21KJ"],c:3},
+
+{q:"Câu 13. Khái niệm đánh giá nhanh chậm phản ứng là",
+a:["tốc độ phản ứng","cân bằng hóa học","nồng độ","chất xúc tác"],c:0},
+
+{q:"Câu 14. Đại lượng đặc trưng biến thiên nồng độ theo thời gian là",
+a:["tốc độ phản ứng","cân bằng","tốc độ tức thời","quá trình hóa học"],c:0},
+
+{q:"Câu 15. Rắc men vào cơm ủ rượu là dùng yếu tố",
+a:["Nhiệt độ","Chất xúc tác","Nồng độ","Áp suất"],c:1},
+
+{q:"Câu 16. Ảnh hưởng diện tích bề mặt",
+a:["Tăng nồng độ HCl","Đập nhỏ đá vôi","Thêm xúc tác","Tăng nhiệt độ"],c:1},
+
+{q:"Câu 17. Nguyên tố không phải halogen",
+a:["Fluorine","Bromine","Oxygen","Iodine"],c:2},
+
+{q:"Câu 18. Cấu hình electron halogen",
+a:["ns²np²","ns²np³","ns²np⁵","ns²np⁶"],c:2},
+
+{q:"Câu 19. Halogen lỏng màu nâu đỏ",
+a:["Fluorine","Bromine","Iodine","Chlorine"],c:1},
+
+{q:"Câu 20. Khí gây hại hô hấp >30μg/m3",
+a:["Cl2","F2","N2","O3"],c:0},
+
+{q:"Câu 21. Đặc điểm chung halogen",
+a:["đều là khí","vừa oxh vừa khử","có tính oxi hóa mạnh","phản ứng mạnh với nước"],c:2},
+
+{q:"Câu 22. Hydrohalic Acid mạnh nhất",
+a:["HI","HF","HCl","HBr"],c:0},
+
+{q:"Câu 23. Acid yếu",
+a:["HF","HBr","HCl","HI"],c:0},
+
+{q:"Câu 24. AgNO3 → kết tủa vàng nhạt",
+a:["HCl","NaBr","NaCl","HF"],c:1},
+
+{q:"Câu 25. AgNO3 → kết tủa trắng",
+a:["KI","KBr","KCl","KF"],c:2}
+
+];
+  
+let quiz = document.getElementById("quiz");  
+let qIndex = mcq.length;  
+shuffle ( mcq);  
+mcq.forEach((x,i)=>{  
+  
+let answers = x.a.map((text,index)=>({text,index}));  
+  
+shuffle(answers);  
+  
+x.shuffledAnswers = answers;  
+  
+quiz.innerHTML += `  
+<div class="question" id="q${i}" data-correct="${answers.findIndex(a=>a.index===x.c)}">  
+<div class="flex-row">  
+  
+<div>  
+<b>${x.q}</b>  
+  
+<div class="result"></div>  
+  
+${answers.map((o,idx)=>`  
+<label>  
+<input type="radio" name="q${i}" value="${idx}">  
+${o.text}  
+</label>  
+`).join("")}  
+  
+</div>  
+  
+${x.image ? `<img src="${x.image}" style="max-width:260px">` : ""}  
+  
+</div>  
+  
+</div>  
+`;  
+});  
+    
+// ---------------- 6 câu đúng sai ----------------    
+let dsq=[
+
+{
+q:"cho hình ảnh",
+image:"Screenshot_2026-04-30-15-08-06-63.jpg",
+a:[
+"Hình a cho biết yếu tố nhiệt độ đã được áp dụng để làm thay đổi tốc độ của phản ứng.",
+"Nhiệt độ trong đá tủ lạnh dưới 0⁰C.",
+" Khi thêm nước chua vào sẽ làm dưa muối nhanh chín hơn.",
+"Mỗi hình đều cho biết các yếu tố nhiệt độ, áp suất, nồng độ, chất xúc tác đã được áp dụng để làm thay đổi tốc độ của phản ứng."
+],
+c:[0,1,1,0]
+},
+
+{
+q:"Câu 2",
+image:"Screenshot_2026-04-30-15-08-22-99.jpg",
+a:[
+"Đồ thị này mô tả sự thay đổi nồng độ theo thời gian của H2.",
+" Tại thời điểm 1 phút nồng độ chất đó là 0,2 mol/l.",
+" Đơn vị tốc độ phản ứng trong trường hợp này là mol/l.phút",
+"Khi tăng nhiệt độ phản ứng thì thời gian phản ứng lâu hơn"
+],
+c:[1,0,0,1]
+},
+
+{
+q:"Câu 3.Trạng thái tồn tại, màu sắc, nhiệt độ nóng chảy (tnc), nhiệt độ sôi (ts) của halogen được trình bày ở Bảng 21.2 dưới đây:",
+image:"Screenshot_2026-04-30-15-08-42-56.jpg",
+a:[
+"Từ F2 đến I2 trạng thái chuyển từ khí → lỏng → rắn.",
+"Nhiệt độ nóng chảy và nhiệt độ sôi của các đơn chất halogen tăng dần từ F2 đến I2 là do từ fluorine đến iodine, khối lượng phân tử và tương tác van der Waals đều tăng.",
+"Màu sắc của các đơn chất halogen biến đổi theo xu hướng đậm dần từ fluorine đến iodine.",
+" Trừ F2 không tan trong nước, các đơn chất halogen còn lại đều tan tốt trong nước."
+],
+c:[1,1,1,0]
+},
+
+{
+q:`Câu 4.  Các nguyên tố phổ biến thuộc nhóm halogen (VIIA) trong bảng tuần hoàn các nguyên tố hóa học gồm: F (Z = 9), C1 (Z = 17), Br (Z = 35) và I (Z = 53). Đơn chất halogen tồn tại dạng phân tử X2, giữa các phân tử X2 thường có tương tác với nhau. Cho giá trị năng lượng liên kết X-X ở bảng sau:
+${bang}`,
+a:[
+"Cấu hình electron lớp ngoài cùng của nguyên tử X có dạng ns²np⁵.",
+" Liên kết giữa các nguyên tử trong X2 là liên kết cộng hoá trị phân cực.",
+"Tương tác giữa các phân tử X2 là tương tác van der Waals.",
+" Năng lượng liên kết Cl - Cl lớn nhất trong dãy trên vì Cl có bán kính nguyên tử nhỏ nhất."
+],
+c:[1,0,1,0]
+}
+
+];
+  
+let dsquiz = document.getElementById("dsquiz");  
+  
+dsq.forEach((block,gi)=>{  
+  
+dsquiz.innerHTML += `<div class="question">
+<b>${block.q}</b>
+${block.image ? `<img src="${block.image}" style="max-width:260px;margin:10px 0;border-radius:8px">` : ""}
+`;
+  
+block.a.forEach((text,i)=>{  
+  
+let id = qIndex;  
+let name = "q"+id;  
+let correct = block.c[i];  
+  
+dsquiz.innerHTML += `  
+<div id="q${id}" data-correct="${correct}"   
+style="margin:10px 0;padding:8px;background:#f7f7f7;border-radius:6px">  
+  
+<label style="margin-right:10px">  
+<input type="radio" name="${name}" value="1"> Đúng  
+</label>  
+  
+<label style="margin-right:10px">  
+<input type="radio" name="${name}" value="0"> Sai  
+</label>  
+  
+<span>${text}</span>  
+<div class="result"></div>  
+</div>  
+`;  
+  
+qIndex++;  
+  
+});  
+  
+dsquiz.innerHTML += `</div>`;  
+  
+});  
+  
+function submitAll(){  
+  
+let correct=0;  
+let wrong=0;  
+let blank=0;  
+let total=qIndex;  
+  
+let resultBoxes=document.querySelectorAll(".result");  
+  
+for(let i=0;i<qIndex;i++){
+
+let radios=document.getElementsByName("q"+i);
+let chosen=null;
+
+let box=document.getElementById("q"+i);
+let correctValue=box.dataset.correct;
+
+let correctText="";
+let chosenText="";
+
+for(let j=0;j<radios.length;j++){
+
+let r=radios[j];
+let label=r.parentElement;
+
+if(r.value==correctValue){
+correctText=label.innerText;
+label.classList.add("correct");
+}
+
+if(r.checked){
+chosen=r;
+chosenText=label.innerText;
+}
+
+}
+
+if(!chosen){
+
+blank++;
+
+resultBoxes[i].innerHTML=
+"Bạn chọn: <span style='color:red;font-weight:bold'>Chưa chọn ❌</span> - Đáp án: <span style='color:green;font-weight:bold'>"+correctText+"</span>";
+
+}
+
+else if(chosen.value==correctValue){
+
+correct++;
+
+resultBoxes[i].innerHTML=
+"Bạn chọn: <span style='color:green;font-weight:bold'>"+chosenText+" ✔</span>";
+
+}
+
+else{
+
+wrong++;
+
+chosen.parentElement.classList.add("wrong");
+
+resultBoxes[i].innerHTML=
+"Bạn chọn: <span style='color:red;font-weight:bold'>"+chosenText+" ❌</span> - Đáp án: <span style='color:green;font-weight:bold'>"+correctText+"</span>";
+
+}
+
+}
+  
+let percent=Math.round((correct/total)*100);  
+  
+document.getElementById("popupScore").innerHTML =  
+correct+" / "+total;  
+  
+document.getElementById("popupDetail").innerHTML =  
+"✅ Đúng: "+correct+  
+" | ❌ Sai: "+wrong+  
+" | ⚪ Chưa làm: "+blank;  
+  
+document.getElementById("popupPercent").innerHTML =  
+percent+"% chính xác";  
+  
+document.getElementById("scorePopup").style.display="flex";  
+  
+document.getElementById("result").innerHTML =  
+"🏆 Điểm: "+correct+" / "+total;  
+  
+document.getElementById("result").style.display="block";  
+  
+document.getElementById("redoBtn").style.display="block";  
+document.getElementById("checkBtn").style.display="none";  
+  
+document.getElementById("popupBarFill").style.width =  
+percent+"%";  
+  
+}  
+  
+  
+function redoQuiz(){  
+location.reload();  
+}  
+</script>    </body>    
+</html>   
